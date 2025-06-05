@@ -1,0 +1,145 @@
+main:
+    li a0, 11
+    li a6, 89
+    jal ra, funcion
+    bne a6, s0, noFunciona
+    li, a0, 9
+    li a6, 34
+    jal ra, funcion
+    bne a6, s0, noFunciona
+    li a0, 1
+    li a6, 1
+    jal ra, funcion
+    bne a6, s0, noFunciona
+    li a0, 2
+    li a6, 1
+    jal ra, funcion
+    bne a6, s0, noFunciona
+    funciona: 
+        li a7, 1
+        j fin
+    noFunciona: 
+        li a7, 0
+    fin: j fin
+
+
+funcion:
+    addi sp,sp,-16
+    sw ra, (0)sp
+    li a5, 2
+    li s0, 1
+    li a1, 1
+    li a2, 1
+    li a3, 0
+    addi a4, s0, -1
+
+    caso1:
+        bne a0,s0, caso2
+        li a0 1
+        j prologo 
+    caso2:
+        bne a0, a5, while
+        li a0 1
+        j prologo 
+    while: 
+        beq s0, a4, load
+        addi s0, s0, 1
+        add a3, a1, a2
+        mv a1, a2
+        mv a2, a3
+        li a3, 0
+        j while
+    load: mv a0, a2
+
+    prologo: 
+        lw ra, (0)sp
+        addi sp, sp, 16
+        ret
+        
+        
+
+
+main:
+    li a0, 1
+    li a1, 3
+    li a2, 2
+    li a3, 4
+    jal ra, funcion
+    li a5, -1
+    bne a6, a5, noFunciona
+    li a0, 3
+    li a1, 1
+    li a2, 4
+    li a3, 2
+    jal ra, funcion
+    li a5, 1
+    bne a6, a5, noFunciona
+    funciona: 
+        li a7, 1
+        j fin
+    noFunciona: 
+        li a7, 0
+    fin: j fin
+funcion:
+    addi sp,sp,-16
+    sw ra, (0)sp
+    li a4, 0
+    bgt a0, a1, caso1
+    beq a0, a1, prologo
+    j caso2
+    caso1:
+        bgt a2, a3, fin1
+        j prologo
+    fin1:
+        li a4, 1
+        j prologo
+    
+    caso2:
+        bgt a3, a2, fin2
+        j prologo
+    fin2:
+        li a4, -1
+        j prologo
+    prologo: 
+        mv a0, a4
+        lw ra, (0)sp
+        addi sp, sp, 16
+        ret
+        
+        
+
+.data
+
+
+
+.main:
+invarreglo:
+    addi sp,sp,-16
+    sw a0,(0)sp
+    sw ra, (16)sp
+    li a2,0
+    mv a3,a0
+    li a4 ,0
+    while:
+    beq a2,a1, prologo
+    slli a4,a2,4
+    lw a0, a4(a3)
+    jal ra , inv
+    sw a0, a4(a3)
+    addi a2, a2 ,1
+    j while
+    prologo:
+        lw a0, (0)sp
+        lw ra, (16)sp
+        addi sp,sp,16
+        ret
+
+inv:
+    addi sp, sp, -4
+    sw ra, (0)sp
+    not a0, a0
+    addi a0, a0, 1
+    lw ra, (0)sp
+    addi sp, sp,4
+    ret
+    
