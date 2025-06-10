@@ -114,3 +114,118 @@ prologo2:
 lw ra, (8)sp
 addi sp, sp, 8
 ret
+
+
+EJERCICO 5:
+A------------------------------------------------------------------------------------
+.text
+main:
+    li a0, 5
+    jal ra, factorial
+    li a7, 120
+    beq a0, a7, Correcto
+    NoCorrecto:
+        li s0, 0
+        j fin
+    Correcto:
+        li s0, 1
+    li a0, 2
+    jal ra, factorial
+    li a7, 2
+    beq a0, a7, Correcto2
+    Nocorrecto2:
+        li s1, 0
+        j fin
+    Correcto2:
+        li s1, 1
+    fin:
+        j fin
+    factorial:
+        addi sp, sp, -16
+        sw ra, (8)sp
+        sw a0, (0)sp
+        li a2, 1
+        ble a0, a2, casoBase
+        addi a0, a0, -1
+        jal ra, factorial
+        lw a1, (0)sp
+        mul a0, a0, a1
+        
+    prologo:
+        lw ra, (8)sp
+        addi sp, sp, 16
+        ret
+    casoBase:
+        li a0, 1
+        j prologo
+
+B-------------------------------------------------------------------------------------------------
+.text
+main:
+    li a0, 3
+    jal ra, fibonacci3
+    li a7, 3
+    beq a0, a7, Correcto
+    NoCorrecto:
+        li s0, 0
+        j fin
+    Correcto:
+        li s0, 1
+    li a0, 6
+    jal ra, fibonacci3
+    li a7, 20
+    beq a0, a7, Correcto2
+    Nocorrecto2:
+        li s1, 0
+        j fin
+    Correcto2:
+        li s1, 1
+    fin:
+        j fin
+    fibonacci3:
+        addi sp, sp, -20
+        sw ra, (16)sp
+        sw a0, (0)sp
+        li t0, 0
+        li t1, 1
+        li t2, 2
+        
+        beq a0, t0, caso0
+        beq a0, t1, caso1
+        beq a0, t2, caso2
+        
+        lw a0, (0)sp
+        addi a0, a0, -1
+        jal ra, fibonacci3
+        sw a0, 4(sp)
+        
+        lw a0, (0)sp
+        addi a0, a0, -2
+        jal ra, fibonacci3
+        sw a0, 8(sp)
+        
+        lw a0, (0)sp
+        addi a0, a0, -3
+        jal ra, fibonacci3
+        sw a0, 12(sp)
+        
+        lw a1, 4(sp)
+        lw a2, 8(sp)
+        lw a3, 12(sp)
+        add a0, a1, a2
+        add a0, a0, a3
+        prologo:
+            lw ra, (16)sp
+            addi sp, sp, 20
+            ret
+        caso0:
+            li a0, 0
+            j prologo
+        caso1:
+            li a0, 1
+            j prologo
+        caso2:
+            li a0, 2
+            j prologo
+EJERCICIO 6:
+A-------------------------------------------------------------------------------------------------------
